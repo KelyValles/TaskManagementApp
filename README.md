@@ -88,54 +88,7 @@ Todas las respuestas de error siguen el formato `application/problem+json` (`Pro
 
 ---
 
-## 4. Manejo de JSON en SQL Server
-
-La tabla `Tasks.AdditionalInfo` (`NVARCHAR(MAX)`) almacena información extra de la tarea (prioridad, fecha estimada, etiquetas, metadatos) en formato JSON. Se valida con `CHECK (AdditionalInfo IS NULL OR ISJSON(AdditionalInfo) = 1)`.
-
-### Consultas demostrativas
-
-Las siguientes consultas están en [database/script.sql](database/script.sql) y demuestran el uso de las funciones JSON nativas:
-
-```sql
-
-SELECT Id, Title, ISJSON(AdditionalInfo) AS IsValidJson FROM Tasks;
-
-
-SELECT Id, Title,
-       JSON_VALUE(AdditionalInfo, '$.priority') AS Priority,
-       JSON_VALUE(AdditionalInfo, '$.dueDate')  AS DueDate
-FROM   Tasks;
-
-
-SELECT Id, JSON_QUERY(AdditionalInfo, '$.tags') AS Tags FROM Tasks;
-
-
-SELECT * FROM Tasks
-WHERE  JSON_VALUE(AdditionalInfo, '$.priority') = 'High';
-
-
-SELECT t.Id, t.Title, tag.value AS Tag
-FROM   Tasks t
-CROSS APPLY OPENJSON(JSON_QUERY(t.AdditionalInfo, '$.tags')) AS tag;
-
-
-SELECT t.Id, t.Title, info.Priority, info.DueDate, info.EstimatedHours
-FROM   Tasks t
-CROSS APPLY OPENJSON(t.AdditionalInfo)
-    WITH (
-        Priority       NVARCHAR(50) '$.priority',
-        DueDate        DATE         '$.dueDate',
-        EstimatedHours INT          '$.estimatedHours'
-    ) AS info;
-
-
-UPDATE Tasks
-SET    AdditionalInfo = JSON_MODIFY(AdditionalInfo, '$.priority', 'Critical')
-WHERE  Id = 1;
-```
-
-
-## 5. Decisiones técnicas
+## 4. Decisiones técnicas
 
 | Tema | Decisión | Motivo |
 |------|----------|--------|
@@ -149,7 +102,7 @@ WHERE  Id = 1;
 
 ---
 
-## 6. Funcionalidades pendientes
+## 5. Funcionalidades pendientes
 
 - **Autenticación / autorización** — no está pedida en el enunciado, así que la API es pública en local.
 - **Tests automatizados** — no se incluyen tests unitarios ni de integración (mejora futura: xUnit + Testcontainers).
