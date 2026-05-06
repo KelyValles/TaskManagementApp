@@ -1,0 +1,94 @@
+<mat-card class="form-card">
+  <header class="form-header">
+    <div class="header-avatar">
+      <mat-icon>task_alt</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>Nueva tarea</h2>
+      <p>Completa los datos para registrar una nueva tarea.</p>
+    </div>
+  </header>
+
+  <mat-card-content class="form-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+
+      <mat-form-field appearance="outline" class="span-2" subscriptSizing="dynamic">
+        <mat-label>Título</mat-label>
+        <mat-icon matIconPrefix>title</mat-icon>
+        <input
+          matInput
+          formControlName="title"
+          maxlength="200"
+          required
+          placeholder="Ej. Configurar entorno de desarrollo">
+        <mat-error *ngIf="form.controls.title.hasError('required')">
+          El título es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Asignar a</mat-label>
+        <mat-icon matIconPrefix>person</mat-icon>
+        <mat-select formControlName="userId" required>
+          <mat-option *ngFor="let u of users()" [value]="u.id">
+            {{ u.name }} — {{ u.email }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls.userId.hasError('required')">
+          Selecciona un usuario.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Prioridad (opcional)</mat-label>
+        <mat-icon matIconPrefix>flag</mat-icon>
+        <mat-select formControlName="priority">
+          <mat-option value="">—</mat-option>
+          <mat-option value="Low">Baja</mat-option>
+          <mat-option value="Medium">Media</mat-option>
+          <mat-option value="High">Alta</mat-option>
+          <mat-option value="Critical">Crítica</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Fecha estimada (opcional)</mat-label>
+        <input
+          matInput
+          [matDatepicker]="duePicker"
+          formControlName="dueDate"
+          readonly
+          (click)="duePicker.open()">
+        <mat-datepicker-toggle matIconSuffix [for]="duePicker"></mat-datepicker-toggle>
+        <mat-datepicker #duePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Etiquetas (opcional)</mat-label>
+        <mat-icon matIconPrefix>label</mat-icon>
+        <input
+          matInput
+          formControlName="tags"
+          placeholder="ui, backend, urgente">
+      </mat-form-field>
+
+      <div class="actions span-2">
+        <button
+          mat-stroked-button
+          type="button"
+          class="action-btn"
+          routerLink="/tasks">
+          Cancelar
+        </button>
+        <button
+          mat-flat-button
+          type="submit"
+          class="action-btn primary-btn"
+          [disabled]="submitting()">
+          <mat-icon>{{ submitting() ? 'hourglass_top' : 'add' }}</mat-icon>
+          {{ submitting() ? 'Guardando…' : 'Crear tarea' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

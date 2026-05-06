@@ -1,0 +1,17 @@
+<div class="feedback" [attr.data-kind]="data.kind">
+  <div class="icon-circle">
+    <mat-icon>{{ icon }}</mat-icon>
+  </div>
+
+  <h2 class="title">{{ data.title }}</h2>
+
+  <p class="detail" *ngIf="data.detail">{{ data.detail }}</p>
+
+  <button
+    mat-flat-button
+    class="ok-button"
+    color="primary"
+    (click)="close()">
+    {{ data.okLabel || 'Ok' }}
+  </button>
+</div>

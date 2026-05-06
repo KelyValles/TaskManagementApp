@@ -1,0 +1,27 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 18px;
+
+  mat-icon {
+    font-size: 24px;
+  }
+}
+
+.nav a {
+  margin-left: 8px;
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+}

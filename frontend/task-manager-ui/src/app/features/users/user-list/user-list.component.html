@@ -1,0 +1,93 @@
+<mat-card class="form-card">
+  <header class="form-header">
+    <div class="header-avatar">
+      <mat-icon>person_add</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>Nuevo usuario</h2>
+      <p>Registra un colaborador del equipo.</p>
+    </div>
+  </header>
+
+  <mat-card-content class="form-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="grow">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          required
+          placeholder="Ej. Ana Gómez">
+        <mat-error *ngIf="form.controls.name.hasError('required')">
+          El nombre es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="grow">
+        <mat-label>Correo</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          required
+          placeholder="ana@empresa.com">
+        <mat-error *ngIf="form.controls.email.hasError('required')">
+          El correo es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">
+          Formato de correo no válido.
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        type="submit"
+        class="action-btn primary-btn"
+        [disabled]="submitting()">
+        <mat-icon>person_add</mat-icon>
+        Crear
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="list-card">
+  <header class="form-header">
+    <div class="header-avatar list-avatar">
+      <mat-icon>group</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>Usuarios</h2>
+      <p>{{ users().length }} colaborador{{ users().length === 1 ? '' : 'es' }} registrado{{ users().length === 1 ? '' : 's' }}.</p>
+    </div>
+  </header>
+
+  <mat-card-content class="list-content">
+    <div class="table-wrap" *ngIf="users().length > 0">
+      <table mat-table [dataSource]="users()" class="users-table">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let u" class="user-name">{{ u.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Correo</th>
+          <td mat-cell *matCellDef="let u">
+            <span class="user-mail">
+              {{ u.email }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+    </div>
+
+    <div *ngIf="users().length === 0" class="empty">
+      <mat-icon>group_off</mat-icon>
+      <p>No hay usuarios registrados.</p>
+    </div>
+  </mat-card-content>
+</mat-card>

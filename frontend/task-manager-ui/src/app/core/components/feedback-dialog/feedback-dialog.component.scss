@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 8px;
+  text-align: center;
+  min-width: 260px;
+  max-width: 360px;
+}
+
+.icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -36px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+
+  mat-icon {
+    color: #fff;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.detail {
+  margin: 0;
+  font-size: 15px;
+  color: #5f5f5f;
+  line-height: 1.4;
+}
+
+.ok-button {
+  margin-top: 8px;
+  min-width: 120px;
+  border-radius: 999px !important;
+  padding: 4px 36px !important;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  background-color: #1976d2 !important;
+  color: #fff !important;
+
+  &:hover {
+    background-color: #1565c0 !important;
+  }
+}
+
+// Variantes por tipo
+.feedback[data-kind='error'] .icon-circle {
+  background: #e53935;
+}
+
+.feedback[data-kind='success'] .icon-circle {
+  background: #2e7d32;
+}
+
+.feedback[data-kind='info'] .icon-circle {
+  background: #1976d2;
+}
